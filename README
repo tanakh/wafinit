@@ -1,0 +1,28 @@
+wafinit - Waf Initialization Tool
+
+* What is this?
+
+wafinit downloads newest waf binary and generates minimal wscript file.
+
+* Install
+
+$ python setup.py install
+
+* Execute
+
+$ wafinit --help
+Usage: wafinit [-a APPNAME] [-v VERSION]
+
+Options:
+  -h, --help            show this help message and exit
+  -a APPNAME, --appname=APPNAME
+  -v VERSION, --version=VERSION
+
+$ wafinit
+Input APPNAME (default test): 
+Input VERSION (default 0.0.0): 
+Downloading http://waf.googlecode.com/files/waf-1.5.13...
+Generating wscript...
+
+$ ls
+waf  wscript

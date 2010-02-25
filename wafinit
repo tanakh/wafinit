@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+# encoding: utf-8 
+
+list_url = 'http://code.google.com/p/waf/downloads/list'
+
+import sys
+from optparse import OptionParser
+
+p = OptionParser(usage = "%prog [-a APPNAME] [-v VERSION]")
+p.add_option('-a', '--appname', action = 'store', type = 'string', dest = 'appname')
+p.add_option('-v', '--version', action = 'store', type = 'string', dest = 'version')
+(opts, args) = p.parse_args(sys.argv)
+
+if not opts.appname:
+    import os
+    curdir = os.getcwd()
+    defname = os.path.basename(curdir)
+    opts.appname = raw_input('Input APPNAME (default %s): ' % defname)
+    if opts.appname == '':
+        opts.appname = defname
+
+if not opts.version:
+    opts.version = raw_input('Input VERSION (default 0.0.0): ')
+    if opts.version == '':
+        opts.version = '0.0.0'
+
+# print opts.appname
+# print opts.version
+
+import urllib
+d = urllib.urlopen(list_url)
+str = d.read()
+d.close()
+
+import re
+m = re.findall('"(http://.*/waf-\d+\.\d+\.\d+)"', str)
+#print m
+
+if not m:
+    print 'waf binary not found'
+    quit()
+
+waf_url = m[0]
+
+print 'Downloading %s...' % waf_url
+urllib.urlretrieve(waf_url, 'waf')
+
+import os, stat
+st = os.stat('waf').st_mode
+os.chmod('waf', st | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
+
+print 'Generating wscript...'
+
+f = open('wscript', 'w')
+
+f.write("""
+APPNAME = '%s'
+VERSION = '%s'
+
+srcdir = '.'
+blddir = 'build'
+
+def set_options(opt):
+    opt.tool_option('compiler_cxx')
+
+def configure(conf):
+    conf.check_tool('compiler_cxx')
+
+def build(bld):
+    pass
+
+def shutdown(ctx):
+    pass
+
+""" % (opts.appname, opts.version))
+
