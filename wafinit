@@ -24,9 +24,6 @@ if not opts.version:
     if opts.version == '':
         opts.version = '0.0.0'
 
-# print opts.appname
-# print opts.version
-
 import urllib
 d = urllib.urlopen(list_url)
 str = d.read()
@@ -34,11 +31,10 @@ d.close()
 
 import re
 m = re.findall('"(http://.*/waf-\d+\.\d+\.\d+)"', str)
-#print m
 
 if not m:
     print 'waf binary not found'
-    quit()
+    sys.exit(1)
 
 waf_url = m[0]
 
