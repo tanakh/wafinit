@@ -4,11 +4,13 @@ wafinit - Waf Initialization Tool
 
 wafinit downloads newest waf binary and generates minimal wscript file.
 
+waf: http://code.google.com/p/waf/
+
 * Install
 
 $ python setup.py install
 
-* Execute
+* Usage
 
 $ wafinit --help
 Usage: wafinit [-a APPNAME] [-v VERSION]
