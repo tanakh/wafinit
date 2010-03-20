@@ -30,7 +30,7 @@ str = d.read()
 d.close()
 
 import re
-m = re.findall('"(http://.*/waf-\d+\.\d+\.\d+)"', str)
+m = re.findall('"(http://.*/waf-\d+\.\d+\.\w+)"', str)
 
 if not m:
     print 'waf binary not found'
